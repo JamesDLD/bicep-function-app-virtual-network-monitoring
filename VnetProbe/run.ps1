@@ -41,14 +41,13 @@ catch
     $FunctionError = $_
     switch ($PSItem.Exception.Message)
     {
-        'Some error'
+        'Some error you know and you will to filter on'
         {
         }
         default
         {
-            Send-Tf1Notification                                                                                `
-                -Title "Error on Azure Function [$( $env:WEBSITE_SITE_NAME )] for function [VnetProbe]"         `
-                -Description "$( '```' + $FunctionError + '```' )"
+            Write-Host "Error on Azure Function [$( $env:WEBSITE_SITE_NAME )] for function [VnetProbe]"
+            Write-Error $FunctionError
         }
     }
     Write-Error $FunctionError
