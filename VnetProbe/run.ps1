@@ -10,21 +10,23 @@ try
 
 
     # Audit
-    foreach ($vNet in $vNets) {
+    foreach ($vNet in $vNets)
+    {
         $vNetUsageList = Get-AzVirtualNetworkUsageList -ResourceGroupName $vNet.ResourceGroupName -Name $vNet.Name
 
-        foreach ($subnet in $vNet.Subnets) {
+        foreach ($subnet in $vNet.Subnets)
+        {
             $subnetUsageList = $vNetUsageList | Where-Object { $_.Id -eq $subnet.Id }
 
             Write-Host "IPaddressesCount [$( $subnetUsageList.CurrentValue )] under AddressPrefix [$( $subnet.AddressPrefix )] for resourceId [$( $subnet.Id )]"
 
             $CustomProperties = @{
                 VirtualNetworkAddressPrefixes = $vNet.AddressSpace.AddressPrefixes
-                SubnetId                      = $subnet.Id
-                SubnetName                    = $subnet.Name
-                SubnetAddressPrefix           = $subnet.AddressPrefix
-                SubnetIPaddressesCount        = $subnetUsageList.CurrentValue 
-                SubnetIPaddressesLimit        = $subnetUsageList.Limit
+                SubnetId = $subnet.Id
+                SubnetName = $subnet.Name
+                SubnetAddressPrefix = $subnet.AddressPrefix
+                SubnetIPaddressesCount = $subnetUsageList.CurrentValue
+                SubnetIPaddressesLimit = $subnetUsageList.Limit
             }
 
             Write-Host "Send custom event telemetry [dld_telemetry_azure_vnets_counter] for the subnet [$( $subnet.Name )] located in the virtual network [$( $vNet.Name )]"

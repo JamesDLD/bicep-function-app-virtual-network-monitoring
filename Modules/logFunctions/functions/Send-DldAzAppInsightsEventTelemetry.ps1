@@ -1,4 +1,5 @@
-function Send-DldAzAppInsightsEventTelemetry {
+function Send-DldAzAppInsightsEventTelemetry
+{
     <#
     .SYNOPSIS
         Sends custom event telemetry to an Azure Application Insights instance.
@@ -33,19 +34,19 @@ function Send-DldAzAppInsightsEventTelemetry {
     Param
     (
         [Parameter(
-            Mandatory = $true,
-            HelpMessage = 'Specify the connection string of your Azure Application Insights instance. This is the recommended method as it will point to the correct region and the the instrumentation key method support will end, see https://learn.microsoft.com/azure/azure-monitor/app/migrate-from-instrumentation-keys-to-connection-strings?WT.mc_id=AZ-MVP-5003548')]
+                Mandatory = $true,
+                HelpMessage = 'Specify the connection string of your Azure Application Insights instance. This is the recommended method as it will point to the correct region and the the instrumentation key method support will end, see https://learn.microsoft.com/azure/azure-monitor/app/migrate-from-instrumentation-keys-to-connection-strings?WT.mc_id=AZ-MVP-5003548')]
         $ConnectionString,
 
         [Parameter(
-            Mandatory = $true,
-            HelpMessage = 'Specify the name of your custom event.')]
+                Mandatory = $true,
+                HelpMessage = 'Specify the name of your custom event.')]
         [System.String]
         [ValidateNotNullOrEmpty()]
         $EventName,
 
         [Parameter(
-            Mandatory = $false)]
+                Mandatory = $false)]
         [Hashtable]
         $CustomProperties
     )
@@ -53,10 +54,12 @@ function Send-DldAzAppInsightsEventTelemetry {
         # App Insights has an endpoint where all incoming telemetry is processed.
         # The reference documentation is available here: https://learn.microsoft.com/azure/azure-monitor/app/api-custom-events-metrics?WT.mc_id=AZ-MVP-5003548
 
-        function ParseConnectionString {
+        function ParseConnectionString
+        {
             param ([string]$ConnectionString)
             $Map = @{ }
-            foreach ($Part in $ConnectionString.Split(";")) {
+            foreach ($Part in $ConnectionString.Split(";"))
+            {
                 $KeyValue = $Part.Split("=")
                 $Map.Add($KeyValue[0], $KeyValue[1])
             }
@@ -70,10 +73,12 @@ function Send-DldAzAppInsightsEventTelemetry {
         # Prepare custom properties.
         # Convert the hashtable to a custom object, if properties were supplied.
 
-        if ($PSBoundParameters.ContainsKey('CustomProperties') -and $CustomProperties.Count -gt 0) {
+        if ($PSBoundParameters.ContainsKey('CustomProperties') -and $CustomProperties.Count -gt 0)
+        {
             $CustomPropertiesObj = [PSCustomObject]$CustomProperties
         }
-        else {
+        else
+        {
             $CustomPropertiesObj = [PSCustomObject]@{ }
         }
 
@@ -86,14 +91,14 @@ function Send-DldAzAppInsightsEventTelemetry {
             'time' = ([System.dateTime]::UtcNow.ToString('o'))
             'iKey' = $InstrumentationKey
             'tags' = [PSCustomObject]@{
-                'ai.cloud.roleInstance'  = $ENV:COMPUTERNAME
+                'ai.cloud.roleInstance' = $ENV:COMPUTERNAME
                 'ai.internal.sdkVersion' = 'AzurePowerShellUtilityFunctions'
             }
             'data' = [PSCustomObject]@{
                 'baseType' = 'EventData'
                 'baseData' = [PSCustomObject]@{
-                    'ver'        = '2'
-                    'name'       = $EventName
+                    'ver' = '2'
+                    'name' = $EventName
                     'properties' = $CustomPropertiesObj
                 }
             }

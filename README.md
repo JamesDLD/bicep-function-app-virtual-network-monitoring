@@ -1,16 +1,17 @@
 # Introduction
+
 Demonstrate how to track Azure Virtual Network IP addresses consumption.
 
+For more details, you can consult the following article [Track IP addresses consumption with Azure Application Insights - Part 2](https://medium.com/@jamesdld23/track-ip-addresses-consumption-with-azure-application-insights-part-2-71243f1f7ddb).
 
 # Clone the sample repository
 
 Download the sample repository, run the following command in your local terminal window:
 
 ```
-git clone git@github.com:JamesDLD/bicep-function-app-virtual-network-monitoring.git
+git clone https://github.com/JamesDLD/bicep-function-app-virtual-network-monitoring.git
 
 ```
-
 
 # Deploy the Bicep file
 
@@ -53,19 +54,18 @@ az deployment sub create                                    \
 
 When the deployment finishes, you should see a message indicating the deployment succeeded.
 
-
 # Validate the deployment
-Use Azure CLI to validate the deployment.
 
+Use Azure CLI to validate the deployment.
 
 ```
 az resource list --resource-group $resourceGroupName
 
 ```
 
-
 # Perform a manual git deployment to the Azure Function App
-Deploy the local PowerShell code to the Function App using Azure CLI.
+
+Deploy the PowerShell code to the Function App using Azure CLI.
 
 ```
 
@@ -76,7 +76,7 @@ functionAppName=$(az deployment group show                                      
                             --output tsv                                        )
 
 az functionapp deployment source config             \
-                --branch develop                    \
+                --branch main                       \
                 --manual-integration                \
                 --name $functionAppName             \
                 --resource-group $resourceGroupName \
@@ -85,6 +85,7 @@ az functionapp deployment source config             \
 ```
 
 # Clean up resources
+
 ```
 az group delete --name $resourceGroupName
 
