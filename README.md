@@ -59,7 +59,7 @@ Use Azure CLI to validate the deployment.
 
 
 ```
-az resource list --resource-group exampleRG
+az resource list --resource-group $resourceGroupName
 
 ```
 
@@ -79,13 +79,13 @@ az functionapp deployment source config             \
                 --branch develop                    \
                 --manual-integration                \
                 --name $functionAppName             \
-                --resource-group $resourceGroupName
+                --resource-group $resourceGroupName \
                 --repo-url https://github.com/JamesDLD/bicep-function-app-virtual-network-monitoring
 
 ```
 
 # Clean up resources
 ```
-az group delete --name exampleRG
+az group delete --name $resourceGroupName
 
 ```
