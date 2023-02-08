@@ -10,6 +10,7 @@ Download the sample repository, run the following command in your local terminal
 
 ```
 git clone https://github.com/JamesDLD/bicep-function-app-virtual-network-monitoring.git
+cd bicep-function-app-virtual-network-monitoring
 
 ```
 
